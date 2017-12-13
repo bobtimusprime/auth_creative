@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Login</title>
+
+        <!--Jquery-->
+        <script
+                src="https://code.jquery.com/jquery-3.2.1.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                crossorigin="anonymous"></script>
+
+        <!--AngularJS-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
+
+        <!--Firebase Dependency-->
+        <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+
+        <!-- AngularFire -->
+        <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+
+
+        <!--Fonts and Stylesheets-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,500" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+
+        <!--Local Javascript-->
+        <script>
+            $(document).ready(function(){
+                $(function(){
+                    $.getScript('javascripts/login.js');	
+                });
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <div ng-congroller="MyCtrl as ctrl">
+
+            <!-- Button that handles sign-in/sign-out -->
+            <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
+
+            <!-- Container where we'll display the user details -->
+            <div class="quickstart-user-details-container">
+                Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+                <div>Firebase auth <code>currentUser</code> object value:</div>
+                <pre><code id="quickstart-account-details">null</code></pre>
+                <div>Google OAuth Access Token:</div>
+                <pre><code id="quickstart-oauthtoken">null</code></pre>
+            </div>
+
+
+            <ul id="list"></ul>
+
+            <div class="container">
+                <input id="txtEmail" type="email" placeholder="Email">
+                <input id="txtPassword" type="password" placeholder="Password">
+
+                <button id="btnLogin" class="btn btn-action">
+                    Log In    
+                </button>
+
+                <button id="btnSignUp" class="btn btn-secondary">
+                    Sign Up
+                </button>
+
+                <button id="btnLogout" class="btn btn-action hide">
+                    Logout
+                </button>
+
+                <input id="addText" type="text" placeholder="text" class="input hide">
+                <button id="addSubmit" type="submit" class="btn btn-action hide"></button>
+
+            </div>
+
+        </div> <!--End myCtrl-->
+    </body>
+</html>

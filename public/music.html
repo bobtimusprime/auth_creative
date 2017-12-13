@@ -1,0 +1,130 @@
+<html>
+    <head>
+        <title>Top Artists</title>
+
+        <!--Stylesheets-->
+        <link href="/stylesheets/style.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+        <script
+                src="http://code.jquery.com/jquery-3.2.1.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                crossorigin="anonymous">
+        </script>
+
+        <!--AngularJS-->
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>-->
+
+        <!--Firebase Dependency-->
+        <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+
+        <!-- AngularFire -->
+        <!--<script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>-->
+
+
+        <script>
+            var lastfmKey = "fa3483fdd647a1652b1b262bc8d90b40";
+            var lastfmSharedSecret = "76303a5728d9f8eb9acdef1e8bee22e7";
+
+
+            //Only load these elements once the document is ready-->
+            $(document).ready(function() {
+
+                //Gives suggestions on keyup while typing  
+                $( "#countryField" ).keyup(function() {
+                    $.getJSON("/getCountry?q="+$("#countryField").val(),function(data) {
+                        var everything;
+                        everything = "<ul>";
+                        $.each(data, function(i,item) {
+                            everything += "<li> "+data[i].country;
+                        });
+                        everything += "</ul>";
+                        $("#countryHint").html(everything);
+                    })
+                        .done(function() { console.log('getJSON request succeeded!'); })
+                        .fail(function(jqXHR, textStatus, errorThrown) { 
+                        console.log('getJSON request failed! ' + textStatus); 
+                        console.log("incoming "+jqXHR.responseText);
+                    })
+                        .always(function() { console.log('getJSON request ended!');
+                                           });
+                });//End countries keyup function
+
+
+                //Search by Country  button
+                $("#countryButton").click(function(e){
+                    var value = $("#countryField").val();
+                    //console.log(value);
+                    e.preventDefault();
+                    $("#displayCountry").text(value);
+
+                    var myurl= "/getTopArtist?q=";
+                    myurl += value;
+                    console.log("Myurl:" + myurl);
+                    $.ajax({
+                        url : myurl,
+                        dataType : "json",
+                        success : function(parsed_json) {
+                            console.log(parsed_json); 
+                            // console.log(parsed_json['topartists']['artist'].length());
+
+                            if (parsed_json.message === "country param invalid") {
+                                $("#displaycountry").html("Not a country - Please check spelling");
+                            }
+                            else { 
+                                var i= parseInt(1); 
+                                var everything = "";
+                                $.each(parsed_json['topartists']['artist'], function(index, value){
+                                    everything += "<div class = artist-ind " + (index+1).toString() + ">";		
+                                    everything += "<a href ="+ value.url + " target= &quot;_blank&quot;><img src = " + value.image[3]['#text'] + " alt = " + value.name + " pic></a>";
+                                    everything += "<ul>";
+                                    everything += "<li>Artist Number: " + (index+1).toString();
+                                    everything += "<li>Name: " + value.name;                
+                                    everything += "</ul>";
+                                    everything += "</div>"		
+
+                                });
+                                $("#artist").html(everything); 
+                            }
+
+
+                        }//End success
+                    });//End ajax
+                }); //End country submit 
+
+                $(function(){
+                    $.getScript('javascripts/logout.js');	
+                });
+            }); //End document.ready
+        </script>
+
+
+    </head>
+    <body>
+
+        <!--Artist portion-->
+        <div id = "top-bar">  
+            <h1>Top Artists by Country</h1> 
+            <span id="sign-in-status"></span>
+            <span id="display-name"></span>
+            <!-- Button that handles sign-in/sign-out -->
+            <button disabled class="sign-in" id="quickstart-sign-in">Sign in with Google</button>
+            <button id="btnLogout" class="btn btn-action hide">Logout</button>
+
+            <div class = "input-container"> 
+                <form>
+                    <input placeholder = "Enter a country" type="text" id="countryField" value="">
+                    <button id="countryButton" type="submit" value="Submit">Submit</button> 
+                </form><br/>
+                <div id="countryHint">Try "Spain" or "Japan"</div>
+            </div>
+        </div>
+
+        <div class="results">
+            <h2>Country: &nbsp;<span id="displayCountry">No country selected</span></h2>  
+            <div id="artist"></div>
+        </div>
+
+    </body>
+
+</html>
