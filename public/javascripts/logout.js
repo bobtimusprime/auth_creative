@@ -89,8 +89,11 @@
 
         //Add a realtime listener
         firebase.auth().onAuthStateChanged(user => {
+
             if(user) {
-                window.location = 'music';
+                if (window.location.pathname !="music"){
+                    //window.location.pathname = 'music';
+                }
                 // User is signed in.
                 var displayName = user.displayName;
                 var email = user.email;
@@ -108,7 +111,9 @@
                 console.log(user);
                 btnLogout.classList.remove('hide');
             } else {
-                window.location = "";
+                if(window.location.pathname != ""){
+                    window.location.pathname = "/";
+                }
                 // User is signed out.
                 document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
                 document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';

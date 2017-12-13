@@ -36,14 +36,16 @@
     </head>
 
     <body>
-        <div ng-congroller="MyCtrl as ctrl">
+        <div ng-congroller="MyCtrl as ctrl" class ="main-container">
 
-            <!-- Button that handles sign-in/sign-out -->
-            <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
+            <h1 style="font-size: 96px; background-color: lightgrey;">
+                Music Stats Login
+            </h1>
+            <p><i>I am aware that this app is still practically useless and the sign-in can be subverted pretty easily, but I'm trying my best.</i></p>
 
             <!-- Container where we'll display the user details -->
-            <div class="quickstart-user-details-container">
-                Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+            <div id="detail-container" class="quickstart-user-details-container hide">
+                Firebase sign-in status: <span id="sign-in-status" >Unknown</span>
                 <div>Firebase auth <code>currentUser</code> object value:</div>
                 <pre><code id="quickstart-account-details">null</code></pre>
                 <div>Google OAuth Access Token:</div>
@@ -65,12 +67,15 @@
                     Sign Up
                 </button>
 
+                <!-- Button that handles sign-in/sign-out -->
+                <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button><br/>
+
+                <div id="sign-in-status2" class="">Not Signed In</div>
+                <div id="display-name" class="hide"></div>
                 <button id="btnLogout" class="btn btn-action hide">
                     Logout
                 </button>
-
-                <input id="addText" type="text" placeholder="text" class="input hide">
-                <button id="addSubmit" type="submit" class="btn btn-action hide"></button>
+                <button id="redirect" type="button" class="btn btn-redirect hide">GO TO WEBSITE</button>
 
             </div>
 

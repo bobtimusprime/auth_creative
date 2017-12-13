@@ -29,7 +29,10 @@
 
             //Only load these elements once the document is ready-->
             $(document).ready(function() {
-
+                
+                $(function(){
+                    $.getScript("javascripts/logout.js")
+                });
                 //Gives suggestions on keyup while typing  
                 $( "#countryField" ).keyup(function() {
                     $.getJSON("/getCountry?q="+$("#countryField").val(),function(data) {
@@ -91,10 +94,6 @@
                         }//End success
                     });//End ajax
                 }); //End country submit 
-
-                $(function(){
-                    $.getScript('javascripts/logout.js');	
-                });
             }); //End document.ready
         </script>
 
@@ -104,17 +103,18 @@
 
         <!--Artist portion-->
         <div id = "top-bar">  
-            <h1>Top Artists by Country</h1> 
+            <h1>Top Artists by Country</h1>
+            
             <span id="sign-in-status"></span>
             <span id="display-name"></span>
             <!-- Button that handles sign-in/sign-out -->
-            <button disabled class="sign-in" id="quickstart-sign-in">Sign in with Google</button>
+            <button disabled class="btn sign-in" id="quickstart-sign-in">Sign in with Google</button>
             <button id="btnLogout" class="btn btn-action hide">Logout</button>
 
             <div class = "input-container"> 
                 <form>
                     <input placeholder = "Enter a country" type="text" id="countryField" value="">
-                    <button id="countryButton" type="submit" value="Submit">Submit</button> 
+                    <button id="countryButton" type="submit" value="Submit" class="btn">Submit</button> 
                 </form><br/>
                 <div id="countryHint">Try "Spain" or "Japan"</div>
             </div>
@@ -124,7 +124,7 @@
             <h2>Country: &nbsp;<span id="displayCountry">No country selected</span></h2>  
             <div id="artist"></div>
         </div>
-
+        <div style="text-align: center">Powered by Last.fm</div>
     </body>
 
 </html>

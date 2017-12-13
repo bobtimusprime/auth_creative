@@ -20,37 +20,43 @@
     const btnLogin = document.getElementById('btnLogin');
     const btnSignUp = document.getElementById('btnSignUp');
     const btnLogout = document.getElementById('btnLogout');
-        
-        //Add login event
-        btnLogin.addEventListener('click', e => {
-            //Get email and pass
-            const email = txtEmail.value;
-            const pass = txtPassword.value;
-            const auth = firebase.auth(); 
-            //Sign in
-            console.log(email);
-            console.log(pass);
-            const promise = auth.signInWithEmailAndPassword(email, pass);
-            promise.catch(e => console.log(e.message));
-        });
+    const btnRedirect = document.getElementById('redirect');
 
-        //Add signup event
-        btnSignUp.addEventListener('click',e=> {
-            //Get email and pass
-            //TODO: Check for real emails
-            //TODO: check for passwords too short
-            const email = txtEmail.value;
-            const pass = txtPassword.value;
-            const auth = firebase.auth(); 
-            //Sign in
-            const promise = auth.createUserWithEmailAndPassword(email, pass);
-            promise.catch(e => console.log(e.message));
-        });
+    //Redirect event
+    btnRedirect.addEventListener('click', e=> {
+        window.location.pathname = '/music'; 
+    });
 
-        //Logout event
-        btnLogout.addEventListener('click', e=> {
-            firebase.auth().signOut();
-        });
+    //Add login event
+    btnLogin.addEventListener('click', e => {
+        //Get email and pass
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth(); 
+        //Sign in
+        console.log(email);
+        console.log(pass);
+        const promise = auth.signInWithEmailAndPassword(email, pass);
+        promise.catch(e => console.log(e.message));
+    });
+
+    //Add signup event
+    btnSignUp.addEventListener('click',e=> {
+        //Get email and pass
+        //TODO: Check for real emails
+        //TODO: check for passwords too short
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth(); 
+        //Sign in
+        const promise = auth.createUserWithEmailAndPassword(email, pass);
+        promise.catch(e => console.log(e.message));
+    });
+
+    //Logout event
+    btnLogout.addEventListener('click', e=> {
+        firebase.auth().signOut();
+    });
 
     /*END EMAIL AUTHENTICATION SECTION*/
 
@@ -119,8 +125,11 @@
 
         //Add a realtime listener
         firebase.auth().onAuthStateChanged(user => {
+
             if(user) {
-                window.location = 'music';
+                if (window.location.pathname != 'music'){
+                    //window.location.pathname = 'music';
+                }
                 // User is signed in.
                 var displayName = user.displayName;
                 var email = user.email;
@@ -132,21 +141,47 @@
 
                 document.getElementById('sign-in-status').textContent = 'Signed in';
                 document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-                document.getElementById('display-name').textContent = displayName;  
+                document.getElementById('quickstart-sign-in').classList.add('hide');
 
 
-                console.log(user);
+                //console.log(user);
+                //Hide things
+                txtEmail.classList.add('hide');
+                txtPassword.classList.add('hide');
+                btnLogin.classList.add('hide');
+                btnSignUp.classList.add('hide');
                 btnLogout.classList.remove('hide');
+
+                document.getElementById('redirect').classList.remove('hide');
+                //document.getElementById('detail-container').classList.add('hide');
+                document.getElementById('sign-in-status2').textContent = 'Signed in';
+                document.getElementById('display-name').textContent = displayName;
+                document.getElementById('display-name').classList.remove('hide');
+
             } else {
-                window.location = "";
+                if (window.location.pathname != ""){
+                    //window.location.pathname = "";
+                }
                 // User is signed out.
-                document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+                document.getElementById('sign-in-status').textContent = 'Signed out';
                 document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
                 document.getElementById('quickstart-account-details').textContent = 'null';
                 document.getElementById('quickstart-oauthtoken').textContent = 'null';
-
+                document.getElementById('display-name').textContent = 'Not Signed In';
                 console.log('Not logged in');
                 btnLogout.classList.add('hide');
+                document.getElementById('redirect').classList.add('hide');
+                //document.getElementById('detail-container').classList.remove('hide');
+                document.getElementById('sign-in-status2').textContent = 'Signed out';
+                document.getElementById('display-name').classList.remove('hide');
+
+                //unHide things
+                txtEmail.classList.remove('hide');
+                txtPassword.classList.remove('hide');
+                btnLogin.classList.remove('hide');
+                btnSignUp.classList.remove('hide');
+                document.getElementById('quickstart-sign-in').classList.remove('hide');
+                
             }
 
             document.getElementById('quickstart-sign-in').disabled = false;
